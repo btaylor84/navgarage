@@ -5,7 +5,7 @@ DOOR_RELAY = 4
 REED_SWITCH = 14
 
 import RPi.GPIO as GPIO
-GPIO.setmode(GPIO.BCM)  # the pin numbers refer to the board connector not the chip
+GPIO.setmode(GPIO.BCM)  
 GPIO.setwarnings(False)
 GPIO.setup(REED_SWITCH, GPIO.IN, GPIO.PUD_UP) 
 GPIO.setup(DOOR_RELAY, GPIO.OUT)
