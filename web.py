@@ -2,8 +2,8 @@ import time
 from datetime import datetime
 from flask import Flask, render_template, request
 
-DOOR_RELAY = 7
-REED_SWITCH = 3
+DOOR_RELAY = 8
+REED_SWITCH = 7
 
 
 
@@ -23,7 +23,7 @@ def index():
              if GPIO.input(DOOR_RELAY) == GPIO.LOW:
                    print ("Garage is Closed")
                    return app.send_static_file('Closed.html')
-               else:
+             else:
                     print ("Garage is Open")
                     return app.send_static_file('Open.html')
 
@@ -37,12 +37,12 @@ def Garage():
                 GPIO.output(DOOR_RELAY, GPIO.HIGH)
                 time.sleep(2)
 
-                  if GPIO.input(REED_SWITCH) == GPIO.LOW:
-                        print ("Garage is Closed")
-                        return app.send_static_file('Closed.html')
-                  else:
-                        print ("Garage is Open")
-                        return app.send_static_file('Open.html')
+                if GPIO.input(REED_SWITCH) == GPIO.LOW:
+                      print ("Garage is Closed")
+                      return app.send_static_file('Closed.html')
+                else:
+                      print ("Garage is Open")
+                      return app.send_static_file('Open.html')
 
         if name != '12345678':  # 12345678 is the Password that Opens Garage Door (Code if Password is Incorrect)
                 if name == "":
@@ -52,7 +52,7 @@ def Garage():
                 if GPIO.input(REED_SWITCH) == GPIO.LOW:
                         print ("Garage is Closed")
                         return app.send_static_file('Closed.html')
-                  else:
+                else:
                         print ("Garage is Open")
                         return app.send_static_file('Open.html')
 
