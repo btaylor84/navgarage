@@ -1,4 +1,6 @@
 import time
+import json
+
 from datetime import datetime
 from flask import Flask, render_template
 
@@ -28,30 +30,35 @@ def Garage():
 
 def Door():
                 if GPIO.input(REED_SWITCH) == GPIO.LOW:
-                    print ("Garage is Closed")
-                    return "open"
-                else:
-                    print ("Garage is Open")
+#                    print ("Garage is Closed")
                     return "closed"
+                else:
+#                    print ("Garage is Open")
+                    return "open"
 
 app = Flask(__name__)
-door_status = Door() 
 
 @app.route("/")
 def index():
-    return render_template("index.html", door_status=door_status)
+    return render_template("index.html", door_status=Door())
 
 @app.route("/open", methods=["POST"])
 def opendoor():
-    global door_status
-    if door_status == "closed"
+    if Door() == "closed":
         Garage()
-        door_status = "open"
+    return Door()
 
 @app.route("/close", methods=["POST"])
 def closedoor():
-    global door_status
-    if door_status == "open"
+    if Door() == "open":
         Garage()
-        door_status = "closed"
+    return Door()
 
+@app.route("/status", methods=["GET"])
+def doorstatus():
+    status = Door()
+    last_time = '00:00:00 on yy-mm-dd'
+    return { "door":Door(), "changed":last_time}
+
+if __name__ == '__main__':
+        app.run(debug=True, host='0.0.0.0', port=5000)

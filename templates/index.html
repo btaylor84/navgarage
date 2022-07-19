@@ -1,16 +1,32 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nav Garage</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/stylesheet.css') }}">
 </head>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('button').forEach(button => {
+        button.onclick = () => {
+            const request = new XMLHttpRequest();
+            request.open('POST', `/${button.id}`);
+            request.onload = () => {
+                const response = request.responseText;
+                document.getElementById('door').innerHTML = response;
+            }; 
+            request.send();
+        };
+    });
+});
+</script>
 <body>
-<h1>Door Status: <span id="door">{{ door_status }}</span> </h1>
+<h2>Door Status: <span id="door">{{ door_status }}</span> </h2>
 <br><br>
-<button id="open">OPEN</button>
+<button id="open" class="openbutton">OPEN</button>
 <br>
-<button id="down">DOWN</button>
+<button id="close" class="closebutton">CLOSE</button>
 </body>
 </html>

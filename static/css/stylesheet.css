@@ -1,0 +1,32 @@
+
+.openbutton {
+    color: #eeeeee;
+    padding: 40px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 28px;
+    border-radius: 12px;
+    width: 25%;
+    background-color: #4CAF50;
+    margin: 20px 0px 20px 0px;
+}
+
+.openbutton:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+.closebutton { 
+    color: #eeeeee;
+    padding: 40px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 28px;
+    border-radius: 12px;
+    width: 25%;
+    background-color: #f44336;
+    margin: 20px 0 20px 0;
+ }
