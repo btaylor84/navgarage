@@ -1,0 +1,47 @@
+.door-status {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .close-button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .open-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  /* Media query for iPhone */
+  @media only screen and (max-width: 767px) {
+    .close-button,
+    .open-button {
+      font-size: 14px;
+      padding: 8px;
+    }
+  }
+  
+  /* Media query for iPad */
+  @media only screen and (min-width: 768px) and (max-width: 1023px) {
+    .close-button,
+    .open-button {
+      font-size: 16px;
+      padding: 12px;
+    }
+  }
+  
