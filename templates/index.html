@@ -24,6 +24,22 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 <body>
+    <!-- the next two script sections are specific for webpush functionality
+       they are taken from 
+       https://suryasankar.medium.com/how-to-setup-basic-web-push-notification-functionality-using-a-flask-backend-1251a5413bbe
+       it's not clear why they're in the body and not before, but that's the example given
+    -->
+    <script 
+        type="text/javascript" src="/static/register_service_worker.js">
+    </script>
+    <script type="text/javascript">
+        registerServiceWorker(
+            "/static/service_worker.js",
+            "{{config['VAPID_PUBLIC_KEY']}}",
+            "/api/push-subscriptions"
+        );
+    </script>
+
     <div class="door-status">
         Door Status: <span id="door">{{ door_status }}</span> </h2>
     </div>

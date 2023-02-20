@@ -7,7 +7,11 @@ import time
 import json
 
 from datetime import datetime
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify
+from flask_sqlalchemy import SQLAlchemy
+from webpush_handler import trigger_push_notifications_for_subscriptions
+from flask_mqtt import Mqtt
+
 
 DOOR_RELAY = 4
 REED_SWITCH = 14
@@ -22,6 +26,7 @@ REED_SWITCH = 14
 garageClosed = True     # true = closed
 
 def Notify(state):
+    mqtt.publish("nav/garage",state)
 
 def Garage():
     global garageClosed
@@ -49,7 +54,21 @@ def Door():
         return "open"
 
 
-app = Flask(__name__)
+app = Flask(__name__, instance_relative_config=True)
+app.config.from_pyfile(‘application.cfg.py’)
+
+mqtt = Mqtt(app)
+
+# establish in-memory db of subscriptions for web-push
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite://"
+
+db = SQLAlchemy(app)
+
+class PushSubscription(db.Model):    
+  id = db.Column(db.Integer, primary_key=True, unique=True)
+  subscription_json = db.Column(db.Text, nullable=False)
+
+db.create_all()
 
 @app.route("/")
 def index():
@@ -72,6 +91,22 @@ def doorstatus():
     status = Door()
     last_time = '00:00:00 on yy-mm-dd'
     return { "door":Door(), "changed":last_time}
+
+@app.route("/api/push-subscriptions", methods=["POST"])
+def create_push_subscription():
+    json_data = request.get_json()
+    subscription = PushSubscription.query.filter_by(
+        subscription_json=json_data['subscription_json']
+    ).first()
+    if subscription is None:
+        subscription = PushSubscription(
+            subscription_json=json_data['subscription_json']
+        )
+        db.session.add(subscription)
+        db.session.commit()
+    return jsonify({
+        "status": "success"
+    })
 
 if __name__ == '__main__':
         app.run(debug=True, host='0.0.0.0', port=5000)
