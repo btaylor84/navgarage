@@ -1,12 +1,14 @@
 .door-status {
     font-size: 18px;
     margin-bottom: 10px;
+    margin-left: 20px;
   }
   
 .button-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: left;
     align-items: center;
+    max-width: 360px;
   }
   
   .close-button {
@@ -15,6 +17,7 @@
     border: none;
     padding: 10px;
     border-radius: 5px;
+    margin: 20px;
     cursor: pointer;
   }
   
@@ -24,6 +27,7 @@
     border: none;
     padding: 10px;
     border-radius: 5px;
+    margin: 20px;
     cursor: pointer;
   }
   
