@@ -9,7 +9,7 @@ import json
 from datetime import datetime
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from pywebpush import webpush, WebPushException
+from webpush_handler import trigger_push_notifications_for_subscriptions
 from flask_mqtt import Mqtt
 
 
@@ -26,7 +26,14 @@ REED_SWITCH = 14
 garageClosed = True     # true = closed
 
 def Notify(state):
+
+    # MQTT update
     mqtt.publish("nav/garage",state)
+
+    # web push 
+    subscriptions = PushSubscription.query.all()
+    print(subscriptions)
+    trigger_push_notifications_for_subscriptions(subscriptions,"Nav Garage",state)
 
 def Garage():
     global garageClosed
@@ -56,7 +63,6 @@ def Door():
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('application.cfg.py')
-app.app_context().push()
 
 mqtt = Mqtt(app)
 
@@ -96,6 +102,7 @@ def doorstatus():
 @app.route("/api/push-subscriptions", methods=["POST"])
 def create_push_subscription():
     json_data = request.get_json()
+    print(json.dumps( json_data)) #DEBUG
     subscription = PushSubscription.query.filter_by(
         subscription_json=json_data['subscription_json']
     ).first()
@@ -105,6 +112,7 @@ def create_push_subscription():
         )
         db.session.add(subscription)
         db.session.commit()
+        print("sub added") #DEBUG
     return jsonify({
         "status": "success"
     })
